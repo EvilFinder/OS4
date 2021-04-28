@@ -18,7 +18,18 @@ int main(int argc, char** argv)
 	ReleaseSemaphore(waitAllSemaphore, 1, NULL);
 	while (1)
 	{
-		printf("choose option\n");
+		Sleep(1000);
+		WaitForSingleObject(semaphoreSender, INFINITE);
+
+		WaitForSingleObject(mutex, INFINITE);
+
+		fprintf(binFile, "%s\n", "1");
+		fflush(binFile);
+		printf("Message sent\n");
+
+		ReleaseMutex(mutex);
+		ReleaseSemaphore(semaphoreReceiver, 1, NULL);
+		/*printf("choose option\n");
 		printf("1. Write file\n");
 		printf("2. Finish work\n");
 
@@ -63,7 +74,7 @@ int main(int argc, char** argv)
 		{
 			break;
 		}
-		}
+		}*/
 
 	}
 }

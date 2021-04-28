@@ -76,7 +76,31 @@ int main()
 
 	while (1)
 	{
-		printf("choose option\n");
+		Sleep(300);
+		WaitForSingleObject(semaphoreReceiver, INFINITE);
+
+		WaitForSingleObject(fileAccessMutex, INFINITE);
+
+		binaryFile = fopen(binFileName, "rb");
+		char line[100];
+		int msgCount = 0;
+		while (fgets(line, 100, binaryFile))
+		{
+			msgCount++;
+			printf("Message received. Message is: %s ", line);
+		}
+
+		if (!fopen(binFileName, "wb"))
+		{
+			printf("Fopen error\n");
+		}
+
+		ReleaseMutex(fileAccessMutex);
+
+		ReleaseSemaphore(semaphoreSender, msgCount, NULL);
+
+
+		/*printf("choose option\n");
 		printf("1. Read file\n");
 		printf("2. Finish work\n");
 
@@ -123,7 +147,7 @@ int main()
 			return 0;
 			break;
 		}
-		}
+		}*/
 
 	}
 
